@@ -1,12 +1,17 @@
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class Interface {
+public class Interface implements ActionListener {
 	
 	JFrame window;
 	JTextArea textArea;
@@ -14,6 +19,9 @@ public class Interface {
 	JMenuBar menuBar;
 	JMenu menuFile;
 	JMenuItem New, Open, Save;
+	JFrame frame;
+	JPanel statusPanel;
+	MenuFunctions file = new MenuFunctions(this);//funcao para o menu "New"
 	
 	public static void main(String[] args) {
 		new Interface();
@@ -25,6 +33,7 @@ public class Interface {
 		window.setVisible(true);
 		createMenuBar();
 		fileMenuItens();
+		createStateBar();
 		
 	}
 	
@@ -48,13 +57,38 @@ public class Interface {
 		menuBar.add(menuFile);
 	}
 	
+	public void createStateBar() {//barra na borda inferior que mostra o path do arquivo aberto
+		frame = new JFrame();
+		frame.setLayout(new BorderLayout());
+		frame.setSize(200,200);
+		
+		statusPanel = new JPanel();
+		
+	}
+	
 	public void fileMenuItens() {//Para a criação dos submenus
 		New = new JMenuItem("New");
+		New.addActionListener(this);
+		New.setActionCommand("New");
+		
 		Open = new JMenuItem("Open");
+		Open.addActionListener(this);
+		Open.setActionCommand("Open");
+		
 		Save = new JMenuItem("Save");
+		
 		menuFile.add(New);
 		menuFile.add(Open);
 		menuFile.add(Save);
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		String command = e.getActionCommand();
+		switch(command) {
+			case "New": file.newFile(); break;
+			case "Open": file.open(); break;
+		}
 	}
 
 }
