@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -10,17 +11,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class Interface implements ActionListener {
-	
+	JTextField path;
 	JFrame window;
 	JTextArea textArea;
 	JScrollPane scroll;
 	JMenuBar menuBar;
 	JMenu menuFile;
-	JMenuItem New, Open, Save;
+	JMenuItem New, Open, Save, SaveAs;
 	JFrame frame;
 	JPanel statusPanel;
+	JTextField textField;
 	MenuFunctions file = new MenuFunctions(this);//funcao para o menu "New"
 	
 	public static void main(String[] args) {
@@ -33,7 +36,11 @@ public class Interface implements ActionListener {
 		window.setVisible(true);
 		createMenuBar();
 		fileMenuItens();
-		createStateBar();
+		//createStateBar();
+		textField = new JTextField();
+		textField.setEditable(false);
+		scroll.setColumnHeaderView(textField);
+		
 		
 	}
 	
@@ -58,9 +65,10 @@ public class Interface implements ActionListener {
 	}
 	
 	public void createStateBar() {//barra na borda inferior que mostra o path do arquivo aberto
-		frame = new JFrame();
-		frame.setLayout(new BorderLayout());
-		frame.setSize(200,200);
+		BorderLayout stateBar = new BorderLayout();
+		JLabel stateBarLabel = new JLabel();
+		window.add(path,stateBar.SOUTH);
+		
 		
 		statusPanel = new JPanel();
 		
@@ -76,10 +84,17 @@ public class Interface implements ActionListener {
 		Open.setActionCommand("Open");
 		
 		Save = new JMenuItem("Save");
+		Save.addActionListener(this);
+		Save.setActionCommand("Save");
+		
+		SaveAs = new JMenuItem("Save as");
+		SaveAs.addActionListener(this);
+		SaveAs.setActionCommand("Save as");
 		
 		menuFile.add(New);
 		menuFile.add(Open);
 		menuFile.add(Save);
+		menuFile.add(SaveAs);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -88,6 +103,8 @@ public class Interface implements ActionListener {
 		switch(command) {
 			case "New": file.newFile(); break;
 			case "Open": file.open(); break;
+			case "Save as": file.saveAs(); break;
+			case "Save": file.save(); break;
 		}
 	}
 
