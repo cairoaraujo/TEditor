@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,8 +11,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public class Interface implements ActionListener {
 	JTextField path;
@@ -23,7 +26,9 @@ public class Interface implements ActionListener {
 	JMenuItem New, Open, Save, SaveAs;
 	JFrame frame;
 	JPanel statusPanel;
+	JPanel contentPanel;
 	JTextField textField;
+	JLabel stateBarLabel;
 	MenuFunctions file = new MenuFunctions(this);//funcao para o menu "New"
 	
 	public static void main(String[] args) {
@@ -36,7 +41,8 @@ public class Interface implements ActionListener {
 		window.setVisible(true);
 		createMenuBar();
 		fileMenuItens();
-		//createStateBar();
+		createStateBar();
+		createContentPanel();
 		textField = new JTextField();
 		textField.setEditable(false);
 		scroll.setColumnHeaderView(textField);
@@ -48,6 +54,17 @@ public class Interface implements ActionListener {
 		window = new JFrame("TEditor");
 		window.setSize(800, 600);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public void createContentPanel() {
+		contentPanel = new JPanel();
+		contentPanel.setBackground(SystemColor.desktop);
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPanel.setLayout(new BorderLayout(0, 0));
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		contentPanel.add(tabbedPane, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane();
+		tabbedPane.addTab("Aba 1", null, scrollPane, null);
 	}
 	
 	public void createTextArea() {//Para criacao da  area de texto
@@ -64,15 +81,18 @@ public class Interface implements ActionListener {
 		menuBar.add(menuFile);
 	}
 	
+	
+	
+	
 	public void createStateBar() {//barra na borda inferior que mostra o path do arquivo aberto
 		BorderLayout stateBar = new BorderLayout();
-		JLabel stateBarLabel = new JLabel();
-		window.add(path,stateBar.SOUTH);
+		stateBarLabel = new JLabel("");
+		window.add(stateBarLabel,stateBar.SOUTH);
 		
-		
-		statusPanel = new JPanel();
 		
 	}
+	
+	
 	
 	public void fileMenuItens() {//Para a criação dos submenus
 		New = new JMenuItem("New");
@@ -101,10 +121,21 @@ public class Interface implements ActionListener {
 		
 		String command = e.getActionCommand();
 		switch(command) {
-			case "New": file.newFile(); break;
-			case "Open": file.open(); break;
-			case "Save as": file.saveAs(); break;
-			case "Save": file.save(); break;
+			case "New": 
+				file.newFile(); 
+				break;
+				
+			case "Open": 
+				file.open(); 
+				break;
+				
+			case "Save as": 
+				file.saveAs(); 
+				break;
+				
+			case "Save": 
+				file.save(); 
+				break;
 		}
 	}
 

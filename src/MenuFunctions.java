@@ -29,6 +29,11 @@ public class MenuFunctions {
 		gui.window.setTitle("New - TEditor");
 		fileName = null;
 		filePath = null;
+		gui.stateBarLabel.setText("opaaa");
+		BorderLayout stateBar = new BorderLayout();
+		JLabel stateBarLabel = new JLabel(filePath);
+		gui.window.add(stateBarLabel,stateBar.SOUTH);
+		
 	}
 	
 	public void open() {
@@ -45,16 +50,22 @@ public class MenuFunctions {
 		File file = new File(fileChooser.getSelectedFile().toString());
 		
 		if (file != null) {
+			System.out.println("ENTROUUUU");
 			filePath = file.getPath();
 			fileName = file.getName();
 			gui.window.setTitle(fileName);
+			gui.stateBarLabel.setText("opaaa");
+			BorderLayout stateBar = new BorderLayout();
+			JLabel stateBarLabel = new JLabel(filePath);
+			gui.window.add(stateBarLabel,stateBar.SOUTH);
 
 		}
 		try {
-			Scanner scanner = new Scanner(file);
-			while(scanner.hasNextLine()) {
-				String data = scanner.nextLine();
-				gui.textArea.insert(data, 0);
+			try (Scanner scanner = new Scanner(file)) {
+				while(scanner.hasNextLine()) {
+					String data = scanner.nextLine();
+					gui.textArea.insert(data, 0);
+				}
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("The file cannot be opened. Check if is correct.");
